@@ -1,0 +1,17 @@
+{
+  "name": "blockchaindemo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "test": "node test-blockchain.js && node test-messages.js && node --test test-regressions.js && node test-p2p.js && node --test test-cli.js"
+  },
+  "keywords": [],
+  "author": "Lain006",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}
