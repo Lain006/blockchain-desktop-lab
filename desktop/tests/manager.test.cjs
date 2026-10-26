@@ -46,7 +46,12 @@ test('真实三进程转发、断连重连、保存恢复、端口冲突和退�
   assert.equal((await blocks(manager.snapshot().nodes[0])).length, 3);
   await manager.action('connect', { id: a.id, target: b.id });
   await until(() => manager.live.get(c.id).info.blockCount === 4);
-  server = await observationServer(manager, path.join(__dirname, '../../frontend/dist'));
+  // 此测试验证目录与服务生命周期，页面渲染由 Electron 验收覆盖。
+  // 使用临时页面，确保干净克隆后 npm test 不依赖已经构建的 dist。
+  const staticDir = path.join(dir, 'test-web');
+  fs.mkdirSync(staticDir);
+  fs.writeFileSync(path.join(staticDir, 'index.html'), '<!doctype html><html><head></head><body>只读目录测试</body></html>');
+  server = await observationServer(manager, staticDir);
   const url = manager.observationUrl;
   await manager.action('stop', { id: a.id });
   assert.equal((await (await fetch(`${url}/nodes`)).json()).length, 2);
